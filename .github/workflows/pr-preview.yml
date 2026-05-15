@@ -11,8 +11,8 @@ permissions:
   pull-requests: write
 
 env:
-  S2VIEWER_VERSION: '10.2'
-  S2VIEWER_URL: 'https://github.com/ValveResourceFormat/ValveResourceFormat/releases/download/10.2/Source2Viewer-CLI-linux-x64.zip'
+  S2VIEWER_VERSION: '19.1'
+  S2VIEWER_URL: 'https://github.com/ValveResourceFormat/ValveResourceFormat/releases/download/19.1/cli-linux-x64.zip'
 
 jobs:
   preview:
