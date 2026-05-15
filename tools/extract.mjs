@@ -61,6 +61,30 @@ async function listDir(dir) {
   }
 }
 
+/**
+ * Resolve the path the user wrote in pack.json `vpk` to an actual .vpk on disk.
+ * If the file is a .zip it gets unzipped into `workDir` and the path to the
+ * extracted .vpk is returned.
+ */
+async function resolveVpkPath(vpkPath, workDir) {
+  if (!vpkPath.toLowerCase().endsWith('.zip')) return vpkPath;
+  await fs.mkdir(workDir, { recursive: true });
+  console.log(`[extract] unzipping ${path.basename(vpkPath)} → ${workDir}`);
+  await run('unzip', ['-q', '-o', vpkPath, '-d', workDir]);
+  // Pick the first .vpk inside the zip, regardless of directory depth.
+  const stack = [workDir];
+  while (stack.length) {
+    const dir = stack.pop();
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    for (const e of entries) {
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) stack.push(full);
+      else if (e.isFile() && e.name.toLowerCase().endsWith('.vpk')) return full;
+    }
+  }
+  throw new Error(`No .vpk found inside ${vpkPath}`);
+}
+
 async function copyVariantFiles(srcDir, destDir, suffix) {
   await fs.mkdir(destDir, { recursive: true });
   const entries = await listDir(srcDir);
@@ -117,10 +141,12 @@ async function extractPack(packDir, outputDir) {
 
   // 1. VPK extraction (optional)
   if (packMeta.vpk) {
-    const vpkPath = path.join(packDir, packMeta.vpk);
-    if (!existsSync(vpkPath)) {
-      throw new Error(`VPK not found at ${vpkPath}`);
+    const vpkSourcePath = path.join(packDir, packMeta.vpk);
+    if (!existsSync(vpkSourcePath)) {
+      throw new Error(`VPK not found at ${vpkSourcePath}`);
     }
+    const unzipDir = path.join(destRoot, '.unzip');
+    const vpkPath = await resolveVpkPath(vpkSourcePath, unzipDir);
     const s2v = await findS2Viewer();
     const tmpExtractDir = path.join(destRoot, '.tmp');
     await fs.mkdir(tmpExtractDir, { recursive: true });
@@ -140,6 +166,7 @@ async function extractPack(packDir, outputDir) {
       console.log(`[extract]   variant ${variant}: ${n} icon(s) from VPK`);
     }
     await fs.rm(tmpExtractDir, { recursive: true, force: true });
+    await fs.rm(unzipDir, { recursive: true, force: true });
   } else {
     console.log('[extract] no VPK, skipping decompile');
   }

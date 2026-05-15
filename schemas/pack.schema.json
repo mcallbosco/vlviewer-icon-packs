@@ -52,8 +52,8 @@
     },
     "vpk": {
       "type": "string",
-      "pattern": "\\.vpk$",
-      "description": "Relative path to the VPK file inside this pack folder."
+      "pattern": "\\.(vpk|zip)$",
+      "description": "Relative path to the VPK inside this pack folder. May be a plain .vpk or a .zip containing exactly one .vpk. Zipping is strongly preferred; raw VPKs over 100 MB cannot be pushed to GitHub."
     },
     "extraction": {
       "type": "object",

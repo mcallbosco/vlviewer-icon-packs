@@ -51,7 +51,14 @@ hover swap.
 
 1. Fork this repository.
 2. Create a new folder under `packs/<game>/<your-pack-id>/`.
-3. Drop your VPK in as `pack.vpk` *and/or* PNGs under `icons-extra/<variant>/`.
+3. Zip your VPK and drop it in as `pack.vpk.zip` *and/or* PNGs under
+   `icons-extra/<variant>/`. VPKs compress ~95–97%, and GitHub rejects single
+   files over 100 MB, so a raw `.vpk` usually won't push — zip first:
+   ```sh
+   zip -9 pack.vpk.zip path/to/your.vpk
+   ```
+   CI auto-unzips before extraction. Plain `.vpk` is supported for the
+   rare pack that fits under the limit.
 4. Write a `pack.json`. Minimum required fields:
 
    ```json
@@ -65,7 +72,7 @@ hover swap.
      "credits": [
        { "name": "Your Name", "url": "https://example.com" }
      ],
-     "vpk": "pack.vpk"
+     "vpk": "pack.vpk.zip"
    }
    ```
 
