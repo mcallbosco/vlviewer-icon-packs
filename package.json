@@ -1,0 +1,17 @@
+{
+  "name": "vlviewer-icon-packs",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Community icon packs for VLViewer sites.",
+  "scripts": {
+    "validate": "node tools/validate.mjs",
+    "extract": "node tools/extract.mjs",
+    "contact-sheet": "node tools/contact-sheet.mjs"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "sharp": "^0.33.5"
+  }
+}

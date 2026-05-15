@@ -1,0 +1,28 @@
+name: Validate packs
+
+on:
+  pull_request:
+    paths:
+      - 'packs/**'
+      - 'schemas/**'
+      - 'tools/validate.mjs'
+      - 'package.json'
+      - '.github/workflows/validate.yml'
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci --no-audit --no-fund
+
+      - name: Validate pack metadata
+        run: node tools/validate.mjs

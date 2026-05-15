@@ -1,0 +1,167 @@
+name: PR preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'packs/**'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  S2VIEWER_VERSION: '10.2'
+  S2VIEWER_URL: 'https://github.com/ValveResourceFormat/ValveResourceFormat/releases/download/10.2/Source2Viewer-CLI-linux-x64.zip'
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci --no-audit --no-fund
+
+      - name: Cache Source2Viewer-CLI
+        id: cache-s2viewer
+        uses: actions/cache@v4
+        with:
+          path: .cache/s2viewer
+          key: s2viewer-${{ env.S2VIEWER_VERSION }}-linux-x64
+
+      - name: Download Source2Viewer-CLI
+        if: steps.cache-s2viewer.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p .cache/s2viewer
+          cd .cache/s2viewer
+          curl -fsSL "${S2VIEWER_URL}" -o s2viewer.zip
+          unzip -q s2viewer.zip
+          chmod +x Source2Viewer-CLI || true
+
+      - name: Export S2VIEWER_BIN
+        run: echo "S2VIEWER_BIN=$GITHUB_WORKSPACE/.cache/s2viewer/Source2Viewer-CLI" >> "$GITHUB_ENV"
+
+      - name: Detect changed pack folders
+        id: detect
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha }}"
+          head="${{ github.event.pull_request.head.sha }}"
+          changed_packs=$(
+            git diff --name-only "$base...$head" -- 'packs/**' \
+              | awk -F/ '{ if ($1=="packs" && $2 && $3) print "packs/"$2"/"$3 }' \
+              | sort -u
+          )
+          echo "Changed packs:"
+          echo "$changed_packs"
+          {
+            echo "packs<<EOF"
+            echo "$changed_packs"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build previews
+        if: steps.detect.outputs.packs != ''
+        id: build
+        run: |
+          set -euo pipefail
+          mkdir -p build previews
+          summary=""
+          while IFS= read -r pack_dir; do
+            [ -z "$pack_dir" ] && continue
+            [ ! -f "$pack_dir/pack.json" ] && continue
+            pack_id=$(basename "$pack_dir")
+            echo "::group::$pack_dir"
+            node tools/extract.mjs "$pack_dir" "build/$pack_id"
+            node tools/contact-sheet.mjs "build/$pack_id" "previews/$pack_id.png"
+            echo "::endgroup::"
+            summary="${summary}- \`${pack_dir}\` → \`previews/${pack_id}.png\`\n"
+          done <<< "${{ steps.detect.outputs.packs }}"
+          {
+            echo "summary<<EOF"
+            printf "%b" "$summary"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Push to previews branch
+        if: steps.detect.outputs.packs != ''
+        id: push
+        run: |
+          set -euo pipefail
+          pr=${{ github.event.pull_request.number }}
+          repo="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          tmp=$(mktemp -d)
+          git clone --depth 1 --branch previews "$repo" "$tmp" 2>/dev/null || {
+            git clone --depth 1 "$repo" "$tmp"
+            cd "$tmp"
+            git checkout --orphan previews
+            git rm -rf . 2>/dev/null || true
+            : > README.md
+            echo "Preview images for open icon-pack PRs. Auto-generated; do not edit." > README.md
+            git add README.md
+            git -c user.name=icon-packs-bot -c user.email=icon-packs-bot@users.noreply.github.com commit -m "init previews branch"
+            git push origin previews
+            cd "$GITHUB_WORKSPACE"
+          }
+          rm -rf "$tmp/pr/$pr" 2>/dev/null || true
+          mkdir -p "$tmp/pr/$pr"
+          cp -r previews/* "$tmp/pr/$pr/"
+          cd "$tmp"
+          git add "pr/$pr"
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+          else
+            git -c user.name=icon-packs-bot -c user.email=icon-packs-bot@users.noreply.github.com commit -m "preview: PR #$pr"
+            git push origin previews
+          fi
+          echo "pr=$pr" >> "$GITHUB_OUTPUT"
+
+      - name: Build comment body
+        if: steps.detect.outputs.packs != ''
+        id: comment
+        run: |
+          set -euo pipefail
+          pr=${{ github.event.pull_request.number }}
+          owner_repo="${{ github.repository }}"
+          body="<!-- icon-pack-preview -->\n"
+          body="${body}### Icon pack preview\n\n"
+          body="${body}${{ steps.build.outputs.summary }}\n"
+          for img in previews/*.png; do
+            [ -f "$img" ] || continue
+            name=$(basename "$img")
+            url="https://raw.githubusercontent.com/${owner_repo}/previews/pr/${pr}/${name}"
+            body="${body}\n#### ${name%.png}\n\n![${name%.png}](${url})\n"
+          done
+          {
+            echo "body<<EOF"
+            printf "%b" "$body"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Find existing preview comment
+        if: steps.detect.outputs.packs != ''
+        uses: peter-evans/find-comment@v3
+        id: find
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '<!-- icon-pack-preview -->'
+
+      - name: Create or update preview comment
+        if: steps.detect.outputs.packs != ''
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.find.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: ${{ steps.comment.outputs.body }}
+          edit-mode: replace

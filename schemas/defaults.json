@@ -1,0 +1,13 @@
+{
+  "_comment": "Default values used by tools/extract.mjs and CI when a pack omits extraction config. Keep in sync with pack.schema.json.",
+  "extraction": {
+    "filePathFilter": "panorama/images/heroes/",
+    "variants": {
+      "minimap":  { "suffix": "_sm_psd" },
+      "normal":   { "suffix": "_card_psd" },
+      "gloat":    { "suffix": "_card_gloat_psd" },
+      "critical": { "suffix": "_card_critical_psd" }
+    }
+  },
+  "iconOverridesDir": "icons-extra"
+}

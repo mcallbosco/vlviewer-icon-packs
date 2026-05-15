@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/mcallbosco/vlviewer-icon-packs/schemas/pack.schema.json",
+  "title": "VLViewer Icon Pack",
+  "type": "object",
+  "required": ["id", "game", "label", "familyId", "license", "credits"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,31}$",
+      "description": "Unique pack id, kebab-case, max 32 chars."
+    },
+    "game": {
+      "type": "string",
+      "enum": ["deadlock"]
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "familyId": {
+      "type": "string",
+      "enum": ["official", "event", "community"]
+    },
+    "description": { "type": "string", "maxLength": 500 },
+    "license": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Asset license declared by the pack contributor."
+    },
+    "hidden": {
+      "type": "boolean",
+      "description": "When true, the pack is only shown in the site UI if an active event references it or the user already selected it.",
+      "default": false
+    },
+    "credits": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "role": { "type": "string" },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "vpk": {
+      "type": "string",
+      "pattern": "\\.vpk$",
+      "description": "Relative path to the VPK file inside this pack folder."
+    },
+    "extraction": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "filePathFilter": {
+          "type": "string",
+          "default": "panorama/images/heroes/"
+        },
+        "variants": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "properties": {
+            "minimap":  { "$ref": "#/definitions/variantExtraction" },
+            "normal":   { "$ref": "#/definitions/variantExtraction" },
+            "gloat":    { "$ref": "#/definitions/variantExtraction" },
+            "critical": { "$ref": "#/definitions/variantExtraction" }
+          }
+        }
+      }
+    },
+    "iconOverridesDir": {
+      "type": "string",
+      "default": "icons-extra",
+      "description": "Folder containing per-variant PNG overrides. Layout: <dir>/<variant>/<character>.png."
+    }
+  },
+  "definitions": {
+    "variantExtraction": {
+      "type": "object",
+      "required": ["suffix"],
+      "additionalProperties": false,
+      "properties": {
+        "suffix": {
+          "type": "string",
+          "pattern": "^_[a-z0-9_]+$",
+          "description": "File suffix (without extension) matched in the VPK, e.g. '_card_psd'."
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "anyOf": [
+        { "required": ["vpk"] },
+        {
+          "properties": {
+            "iconOverridesDir": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    }
+  ]
+}
