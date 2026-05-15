@@ -73,79 +73,87 @@ jobs:
       - name: Build previews
         if: steps.detect.outputs.packs != ''
         id: build
+        env:
+          CHANGED_PACKS: ${{ steps.detect.outputs.packs }}
         run: |
           set -euo pipefail
           mkdir -p build previews
           summary=""
           while IFS= read -r pack_dir; do
             [ -z "$pack_dir" ] && continue
-            [ ! -f "$pack_dir/pack.json" ] && continue
+            if [ ! -f "$pack_dir/pack.json" ]; then continue; fi
             pack_id=$(basename "$pack_dir")
             echo "::group::$pack_dir"
             node tools/extract.mjs "$pack_dir" "build/$pack_id"
             node tools/contact-sheet.mjs "build/$pack_id" "previews/$pack_id.png"
             echo "::endgroup::"
-            summary="${summary}- \`${pack_dir}\` → \`previews/${pack_id}.png\`\n"
-          done <<< "${{ steps.detect.outputs.packs }}"
+            summary="${summary}- \`${pack_dir}\` -> \`previews/${pack_id}.png\`"$'\n'
+          done <<< "$CHANGED_PACKS"
           {
-            echo "summary<<EOF"
-            printf "%b" "$summary"
-            echo "EOF"
+            echo "summary<<PACKS_EOF"
+            printf "%s" "$summary"
+            echo "PACKS_EOF"
           } >> "$GITHUB_OUTPUT"
 
       - name: Push to previews branch
         if: steps.detect.outputs.packs != ''
         id: push
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO_SLUG: ${{ github.repository }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          pr=${{ github.event.pull_request.number }}
-          repo="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          repo="https://x-access-token:${GH_TOKEN}@github.com/${REPO_SLUG}.git"
           tmp=$(mktemp -d)
-          git clone --depth 1 --branch previews "$repo" "$tmp" 2>/dev/null || {
+          if ! git clone --depth 1 --branch previews "$repo" "$tmp" 2>/dev/null; then
             git clone --depth 1 "$repo" "$tmp"
-            cd "$tmp"
-            git checkout --orphan previews
-            git rm -rf . 2>/dev/null || true
-            : > README.md
-            echo "Preview images for open icon-pack PRs. Auto-generated; do not edit." > README.md
-            git add README.md
-            git -c user.name=icon-packs-bot -c user.email=icon-packs-bot@users.noreply.github.com commit -m "init previews branch"
-            git push origin previews
-            cd "$GITHUB_WORKSPACE"
-          }
-          rm -rf "$tmp/pr/$pr" 2>/dev/null || true
-          mkdir -p "$tmp/pr/$pr"
-          cp -r previews/* "$tmp/pr/$pr/"
+            (
+              cd "$tmp"
+              git checkout --orphan previews
+              git rm -rf . 2>/dev/null || true
+              printf "Preview images for open icon-pack PRs. Auto-generated; do not edit.\n" > README.md
+              git add README.md
+              git -c user.name=icon-packs-bot -c user.email=icon-packs-bot@users.noreply.github.com commit -m "init previews branch"
+              git push origin previews
+            )
+          fi
+          rm -rf "$tmp/pr/$PR_NUMBER" 2>/dev/null || true
+          mkdir -p "$tmp/pr/$PR_NUMBER"
+          cp -r previews/* "$tmp/pr/$PR_NUMBER/"
           cd "$tmp"
-          git add "pr/$pr"
+          git add "pr/$PR_NUMBER"
           if git diff --cached --quiet; then
             echo "Nothing to commit."
           else
-            git -c user.name=icon-packs-bot -c user.email=icon-packs-bot@users.noreply.github.com commit -m "preview: PR #$pr"
+            git -c user.name=icon-packs-bot -c user.email=icon-packs-bot@users.noreply.github.com commit -m "preview: PR #$PR_NUMBER"
             git push origin previews
           fi
-          echo "pr=$pr" >> "$GITHUB_OUTPUT"
 
       - name: Build comment body
         if: steps.detect.outputs.packs != ''
         id: comment
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO_SLUG: ${{ github.repository }}
+          PACK_SUMMARY: ${{ steps.build.outputs.summary }}
         run: |
           set -euo pipefail
-          pr=${{ github.event.pull_request.number }}
-          owner_repo="${{ github.repository }}"
-          body="<!-- icon-pack-preview -->\n"
-          body="${body}### Icon pack preview\n\n"
-          body="${body}${{ steps.build.outputs.summary }}\n"
-          for img in previews/*.png; do
-            [ -f "$img" ] || continue
-            name=$(basename "$img")
-            url="https://raw.githubusercontent.com/${owner_repo}/previews/pr/${pr}/${name}"
-            body="${body}\n#### ${name%.png}\n\n![${name%.png}](${url})\n"
-          done
           {
-            echo "body<<EOF"
-            printf "%b" "$body"
-            echo "EOF"
+            echo "body<<BODY_EOF"
+            echo "<!-- icon-pack-preview -->"
+            echo "### Icon pack preview"
+            echo ""
+            printf "%s\n" "$PACK_SUMMARY"
+            for img in previews/*.png; do
+              [ -f "$img" ] || continue
+              name=$(basename "$img")
+              echo ""
+              echo "#### ${name%.png}"
+              echo ""
+              echo "![${name%.png}](https://raw.githubusercontent.com/${REPO_SLUG}/previews/pr/${PR_NUMBER}/${name})"
+            done
+            echo "BODY_EOF"
           } >> "$GITHUB_OUTPUT"
 
       - name: Find existing preview comment
