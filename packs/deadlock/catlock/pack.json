@@ -3,18 +3,18 @@
   "id": "catlock",
   "game": "deadlock",
   "label": "Catlock",
-  "familyId": "event",
-  "description": "April Fools cat-themed portraits.",
+  "familyId": "community",
+  "description": "Cat-themed portraits for every hero.",
   "license": "Personal-use; not for redistribution outside this site.",
   "credits": [
     {
       "name": "Die Chance",
-      "role": "Catlock mod",
+      "role": "Artist",
       "url": "https://gamebanana.com/mods/656526"
     },
     {
       "name": "duckenjoyer69",
-      "role": "Catlock mod",
+      "role": "Mod developer",
       "url": "https://gamebanana.com/mods/656526"
     }
   ],
