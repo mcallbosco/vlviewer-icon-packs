@@ -80,6 +80,15 @@
       "type": "string",
       "default": "icons-extra",
       "description": "Folder containing per-variant PNG overrides. Layout: <dir>/<variant>/<character>.png."
+    },
+    "doNotUse": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["minimap", "normal", "gloat", "critical"]
+      },
+      "description": "Variants this pack ships but should not be used by the website (e.g. a fan pack that only has art for some surfaces). Listed variants are dropped during extraction and excluded from the generated manifest."
     }
   },
   "definitions": {
