@@ -4,8 +4,9 @@
   "game": "deadlock",
   "label": "Catlock",
   "familyId": "community",
-  "description": "Cat-themed portraits for every hero.",
-  "license": "Personal-use; not for redistribution outside this site.",
+  "description": "Cat-themed portraits.",
+  "license": "",
+  "doNotUse": ["minimap"],
   "credits": [
     {
       "name": "Die Chance",
