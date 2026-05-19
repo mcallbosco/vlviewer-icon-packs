@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../schemas/pack.schema.json",
+  "id": "toasted",
+  "game": "deadlock",
+  "label": "Toasted",
+  "familyId": "community",
+  "description": "Toasty's portraits.",
+  "license": "",
+  "doNotUse": ["minimap"],
+  "credits": [
+    {
+      "name": "ToastyGhostey",
+      "role": "Artist",
+      "url": "https://gamebanana.com/mods/610813"
+    },
+    {
+      "name": "cosmiclatte",
+      "role": "Mod developer",
+      "url": "https://gamebanana.com/mods/610813"
+    }
+  ],
+  "vpk": "pack.vpk.zip"
+}
