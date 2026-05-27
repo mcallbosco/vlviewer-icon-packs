@@ -1,0 +1,22 @@
+{
+  "$schema": "../../../schemas/pack.schema.json",
+  "id": "jill",
+  "game": "deadlock",
+  "label": "Jill's Deadlock Portraits",
+  "familyId": "community",
+  "license": "No license",
+  "doNotUse": ["minimap"],
+  "credits": [
+    {
+      "name": "jillsmod",
+      "role": "Artist",
+      "url": "https://gamebanana.com/members/2787628"
+    },
+    {
+      "name": "cosmiclatte",
+      "role": "Implementer",
+      "url": "https://gamebanana.com/members/1529951"
+    }
+  ],
+  "vpk": "jillsdeadlockver3.zip"
+}
