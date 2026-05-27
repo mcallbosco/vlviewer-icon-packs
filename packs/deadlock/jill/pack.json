@@ -2,8 +2,9 @@
   "$schema": "../../../schemas/pack.schema.json",
   "id": "jill",
   "game": "deadlock",
-  "label": "Jill's Deadlock Portraits",
+  "label": "Jill",
   "familyId": "community",
+  "description": "Jill's portraits.",
   "license": "No license",
   "doNotUse": ["minimap"],
   "credits": [
