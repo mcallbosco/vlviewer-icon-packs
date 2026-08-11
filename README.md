@@ -80,6 +80,13 @@ hover swap.
    anything is wrong, the validation workflow will tell you.
 6. A maintainer reviews and merges.
 
+## Deployment trigger
+
+After validation succeeds on `main`, GitHub Actions calls the VLViewer
+Cloudflare Pages Deploy Hook stored in the `VLVIEWER_PAGES_DEPLOY_HOOK`
+repository secret. If the secret has not been configured yet, validation still
+succeeds and the workflow reports a warning instead of failing.
+
 ## Testing locally
 
 ```sh
