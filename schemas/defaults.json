@@ -3,7 +3,7 @@
   "extraction": {
     "filePathFilter": "panorama/images/heroes/",
     "variants": {
-      "minimap":  { "suffix": "_sm_psd" },
+      "minimap":  { "suffixes": ["_sm_png", "_sm_psd"] },
       "normal":   { "suffix": "_card_psd" },
       "gloat":    { "suffix": "_card_gloat_psd" },
       "critical": { "suffix": "_card_critical_psd" }

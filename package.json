@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "description": "Community icon packs for VLViewer sites.",
   "scripts": {
+    "test": "node --test tests/*.test.mjs",
     "validate": "node tools/validate.mjs",
     "extract": "node tools/extract.mjs",
     "contact-sheet": "node tools/contact-sheet.mjs"

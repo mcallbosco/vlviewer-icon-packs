@@ -21,6 +21,7 @@ import path from 'path';
 import os from 'os';
 import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
+import { selectVariantPngs } from './lib/icon-variant-files.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -85,18 +86,13 @@ async function resolveVpkPath(vpkPath, workDir) {
   throw new Error(`No .vpk found inside ${vpkPath}`);
 }
 
-async function copyVariantFiles(srcDir, destDir, suffix) {
+async function copyVariantFiles(srcDir, destDir, suffixes) {
   await fs.mkdir(destDir, { recursive: true });
-  const entries = await listDir(srcDir);
+  const entries = (await listDir(srcDir)).filter((entry) => entry.isFile());
+  const selected = selectVariantPngs(entries.map((entry) => entry.name), suffixes);
   let copied = 0;
-  for (const entry of entries) {
-    if (!entry.isFile()) continue;
-    if (!entry.name.toLowerCase().endsWith('.png')) continue;
-    const stem = path.basename(entry.name, '.png');
-    if (!stem.endsWith(suffix)) continue;
-    const character = stem.slice(0, -suffix.length);
-    if (!character) continue;
-    await fs.copyFile(path.join(srcDir, entry.name), path.join(destDir, `${character}.png`));
+  for (const { character, fileName } of selected) {
+    await fs.copyFile(path.join(srcDir, fileName), path.join(destDir, `${character}.png`));
     copied += 1;
   }
   return copied;
@@ -162,7 +158,8 @@ async function extractPack(packDir, outputDir) {
     for (const [variant, cfg] of Object.entries(extraction.variants)) {
       if (!VARIANT_ORDER.includes(variant)) continue;
       const variantDest = path.join(destRoot, variant);
-      const n = await copyVariantFiles(decompiledDir, variantDest, cfg.suffix);
+      const suffixes = cfg.suffixes ?? [cfg.suffix];
+      const n = await copyVariantFiles(decompiledDir, variantDest, suffixes);
       console.log(`[extract]   variant ${variant}: ${n} icon(s) from VPK`);
     }
     await fs.rm(tmpExtractDir, { recursive: true, force: true });

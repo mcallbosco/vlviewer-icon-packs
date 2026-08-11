@@ -37,7 +37,7 @@ mapping is:
 
 | Variant id | VPK suffix             | Pixel size |
 |------------|------------------------|------------|
-| `minimap`  | `_sm_psd`              | 192×192    |
+| `minimap`  | `_sm_png`, `_sm_psd`    | Varies     |
 | `normal`   | `_card_psd`            | 333×450    |
 | `gloat`    | `_card_gloat_psd`      | 333×450    |
 | `critical` | `_card_critical_psd`   | 333×451    |

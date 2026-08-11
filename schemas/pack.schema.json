@@ -94,13 +94,26 @@
   "definitions": {
     "variantExtraction": {
       "type": "object",
-      "required": ["suffix"],
       "additionalProperties": false,
+      "oneOf": [
+        { "required": ["suffix"] },
+        { "required": ["suffixes"] }
+      ],
       "properties": {
         "suffix": {
           "type": "string",
           "pattern": "^_[a-z0-9_]+$",
           "description": "File suffix (without extension) matched in the VPK, e.g. '_card_psd'."
+        },
+        "suffixes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^_[a-z0-9_]+$"
+          },
+          "description": "Ordered file suffixes matched in the VPK. Earlier entries win when multiple files resolve to one character."
         }
       }
     }
