@@ -1,0 +1,77 @@
+{
+  "$schema": "../../../schemas/pack.schema.json",
+  "id": "remlock",
+  "game": "deadlock",
+  "label": "Remlock",
+  "familyId": "community",
+  "description": "Rem-themed portraits for every Deadlock hero.",
+  "license": "Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).",
+  "credits": [
+    {
+      "name": "gaohung",
+      "role": "Apollo, Viscous, all icons, graphics, and portraits",
+      "url": "https://gamebanana.com/members/4782546"
+    },
+    {
+      "name": "Gurtholomew",
+      "role": "Sinclair, Victor, Calico, Lash, McGinnis, Mo & Krill, Venator, Wraith, Paradox, Mirage, particles, VFX, SFX, and mod packaging",
+      "url": "https://gamebanana.com/members/5183408"
+    },
+    {
+      "name": "trashbaby334",
+      "role": "Abrams, Celeste, Infernus, Silver, and Haze",
+      "url": "https://gamebanana.com/members/5312127"
+    },
+    {
+      "name": "Marbix",
+      "role": "Billy, Grey Talon, Vindicta, and Pocket",
+      "url": "https://gamebanana.com/members/5087295"
+    },
+    {
+      "name": "running_",
+      "role": "Paige, Shiv, Seven, and Bebop",
+      "url": "https://gamebanana.com/members/1947795"
+    },
+    {
+      "name": "Wasahbi",
+      "role": "Graves, Lady Geist, and Mina",
+      "url": "https://gamebanana.com/members/5406047"
+    },
+    {
+      "name": "ponagama",
+      "role": "Holliday, Viper, and Yamato",
+      "url": "https://gamebanana.com/members/5506823"
+    },
+    {
+      "name": "astro_k07",
+      "role": "Drifter, Dynamo, and Warden",
+      "url": "https://gamebanana.com/members/5328942"
+    },
+    {
+      "name": "Cobizal",
+      "role": "Doorman and voicelines",
+      "url": "https://gamebanana.com/members/5377298"
+    },
+    {
+      "name": "KoT705",
+      "role": "Kelvin",
+      "url": "https://gamebanana.com/members/4806190"
+    },
+    {
+      "name": "funnymonkeyman",
+      "role": "Ivy",
+      "url": "https://gamebanana.com/members/4819246"
+    },
+    {
+      "name": "DeerLaloutus",
+      "role": "Helper in Hidden King Spawn",
+      "url": "https://gamebanana.com/members/1845043"
+    },
+    {
+      "name": "CF3",
+      "role": "Commissioner",
+      "url": "https://gamebanana.com/members/5532726"
+    }
+  ],
+  "vpk": "pack.vpk.zip"
+}
