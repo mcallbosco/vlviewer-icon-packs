@@ -4,10 +4,10 @@
     "filePathFilter": "panorama/images/heroes/",
     "variants": {
       "minimap":  { "suffixes": ["_sm_png", "_sm_psd"] },
-      "minimap-low-res": { "suffixes": ["_mm_png", "_mm_psd"] },
       "normal":   { "suffix": "_card_psd" },
       "gloat":    { "suffix": "_card_gloat_psd" },
-      "critical": { "suffix": "_card_critical_psd" }
+      "critical": { "suffix": "_card_critical_psd" },
+      "minimap-low-res": { "suffixes": ["_mm_png", "_mm_psd"] }
     }
   },
   "iconOverridesDir": "icons-extra"
