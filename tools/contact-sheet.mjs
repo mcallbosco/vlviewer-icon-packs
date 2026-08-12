@@ -15,7 +15,7 @@ import { existsSync } from 'fs';
 import path from 'path';
 import sharp from 'sharp';
 
-const VARIANT_ORDER = ['minimap', 'normal', 'gloat', 'critical'];
+const VARIANT_ORDER = ['minimap', 'minimap-low-res', 'normal', 'gloat', 'critical'];
 const TILE = 96;        // tile size (px)
 const COLS = 8;
 const PADDING = 8;

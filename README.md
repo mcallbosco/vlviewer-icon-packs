@@ -16,6 +16,7 @@ packs/
       pack.vpk               # optional: Source 2 VPK to extract
       icons-extra/           # optional: hand-tweaked PNG overrides
         minimap/
+        minimap-low-res/
         normal/
         gloat/
         critical/
@@ -32,15 +33,16 @@ tools/
 
 ## Variants
 
-Every pack supports four variants per character. The standard Deadlock
+Every pack supports five variants per character. The standard Deadlock
 mapping is:
 
-| Variant id | VPK suffix             | Pixel size |
-|------------|------------------------|------------|
-| `minimap`  | `_sm_png`, `_sm_psd`    | Varies     |
-| `normal`   | `_card_psd`            | 333×450    |
-| `gloat`    | `_card_gloat_psd`      | 333×450    |
-| `critical` | `_card_critical_psd`   | 333×451    |
+| Variant id         | VPK suffix               | Pixel size |
+|--------------------|--------------------------|------------|
+| `minimap`          | `_sm_png`, `_sm_psd`      | Varies     |
+| `minimap-low-res`  | `_mm_png`, `_mm_psd`      | Varies     |
+| `normal`           | `_card_psd`               | 333×450    |
+| `gloat`            | `_card_gloat_psd`         | 333×450    |
+| `critical`         | `_card_critical_psd`      | 333×451    |
 
 Variants are optional. A pack can ship only the ones it has; the site falls
 back to the default pack for missing variants. Users on the site choose

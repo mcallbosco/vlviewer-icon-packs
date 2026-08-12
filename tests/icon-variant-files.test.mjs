@@ -22,3 +22,20 @@ test('large icon extraction accepts PSD- and PNG-backed small textures', () => {
     ],
   );
 });
+
+test('low-res minimap extraction accepts canonical mm textures without assuming dimensions', () => {
+  const selected = selectVariantPngs([
+    'chrono_mm_psd.png',
+    'hornet_mm_png.png',
+    'hornet_mm_psd.png',
+    'hornet_sm_png.png',
+  ], ['_mm_png', '_mm_psd']);
+
+  assert.deepEqual(
+    selected.map(({ character, fileName }) => ({ character, fileName })),
+    [
+      { character: 'chrono', fileName: 'chrono_mm_psd.png' },
+      { character: 'hornet', fileName: 'hornet_mm_png.png' },
+    ],
+  );
+});

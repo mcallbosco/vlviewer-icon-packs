@@ -69,6 +69,7 @@
           "additionalProperties": false,
           "properties": {
             "minimap":  { "$ref": "#/definitions/variantExtraction" },
+            "minimap-low-res": { "$ref": "#/definitions/variantExtraction" },
             "normal":   { "$ref": "#/definitions/variantExtraction" },
             "gloat":    { "$ref": "#/definitions/variantExtraction" },
             "critical": { "$ref": "#/definitions/variantExtraction" }
@@ -86,7 +87,7 @@
       "uniqueItems": true,
       "items": {
         "type": "string",
-        "enum": ["minimap", "normal", "gloat", "critical"]
+        "enum": ["minimap", "minimap-low-res", "normal", "gloat", "critical"]
       },
       "description": "Variants this pack ships but should not be used by the website (e.g. a fan pack that only has art for some surfaces). Listed variants are dropped during extraction and excluded from the generated manifest."
     }

@@ -27,7 +27,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const REPO_ROOT = path.resolve(__dirname, '..');
 
-const VARIANT_ORDER = ['minimap', 'normal', 'gloat', 'critical'];
+const VARIANT_ORDER = ['minimap', 'minimap-low-res', 'normal', 'gloat', 'critical'];
 
 async function readJson(filePath) {
   const raw = await fs.readFile(filePath, 'utf8');
