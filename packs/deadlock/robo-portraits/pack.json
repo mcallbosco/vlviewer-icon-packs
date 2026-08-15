@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../schemas/pack.schema.json",
+  "id": "robo-portraits",
+  "game": "deadlock",
+  "label": "Robo's Deadlock Portraits",
+  "familyId": "community",
+  "description": "Robo's illustrated Deadlock portraits, with default-color and monochrome variants.",
+  "license": "No license specified by the author.",
+  "credits": [
+    {
+      "name": "Robo The God",
+      "role": "Artist",
+      "url": "https://gamebanana.com/mods/547478"
+    }
+  ],
+  "vpkSources": {
+    "default": "default_portraits_v3.zip",
+    "monochrome": "monochrome_portraits_v3.zip"
+  },
+  "extraction": {
+    "variants": {
+      "normal": {
+        "source": "default",
+        "suffix": "_card_psd"
+      },
+      "normal-monochrome": {
+        "source": "monochrome",
+        "suffix": "_card_psd"
+      }
+    }
+  },
+  "variantLabels": {
+    "normal": "Normal",
+    "normal-monochrome": "Normal Monochrome"
+  }
+}

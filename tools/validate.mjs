@@ -64,10 +64,38 @@ async function validateOne(ajv, schema, packJsonPath) {
   if (meta.vpk && !existsSync(path.join(packDir, meta.vpk))) {
     errors.push(`vpk file missing: ${meta.vpk}`);
   }
+  const sourceEntries = Object.entries(meta.vpkSources ?? {});
+  if (meta.vpk && Object.hasOwn(meta.vpkSources ?? {}, 'default')) {
+    errors.push('vpk conflicts with vpkSources.default');
+  }
+  for (const [sourceId, sourcePath] of sourceEntries) {
+    if (!existsSync(path.join(packDir, sourcePath))) {
+      errors.push(`vpkSources.${sourceId} file missing: ${sourcePath}`);
+    }
+  }
+  const sourceIds = new Set(sourceEntries.map(([sourceId]) => sourceId));
+  if (meta.vpk) sourceIds.add('default');
+  for (const [variant, config] of Object.entries(meta.extraction?.variants ?? {})) {
+    if (sourceIds.size > 1 && !config.source) {
+      errors.push(`extraction variant ${variant} must select a source when multiple VPKs are declared`);
+    } else if (config.source && !sourceIds.has(config.source)) {
+      errors.push(`extraction variant ${variant} references missing source: ${config.source}`);
+    }
+  }
+  for (const variant of Object.keys(meta.variantLabels ?? {})) {
+    const overrideVariantDir = path.join(
+      packDir,
+      meta.iconOverridesDir || 'icons-extra',
+      variant,
+    );
+    if (!(variant in (meta.extraction?.variants ?? {})) && !existsSync(overrideVariantDir)) {
+      errors.push(`variantLabels.${variant} has no matching extraction variant or override folder`);
+    }
+  }
   const overridesDir = path.join(packDir, meta.iconOverridesDir || 'icons-extra');
   const hasOverrides = existsSync(overridesDir);
-  if (!meta.vpk && !hasOverrides) {
-    errors.push('pack ships no content (no vpk and no icons-extra/ folder)');
+  if (!meta.vpk && sourceEntries.length === 0 && !hasOverrides) {
+    errors.push('pack ships no content (no vpk, vpkSources, or icons-extra/ folder)');
   }
 
   return { ok: errors.length === 0, errors };

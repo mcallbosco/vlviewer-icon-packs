@@ -28,6 +28,7 @@ const __dirname = path.dirname(__filename);
 const REPO_ROOT = path.resolve(__dirname, '..');
 
 const VARIANT_ORDER = ['minimap', 'normal', 'gloat', 'critical', 'minimap-low-res'];
+const SAFE_VARIANT_ID = /^[a-z0-9][a-z0-9-]{0,31}$/;
 
 async function readJson(filePath) {
   const raw = await fs.readFile(filePath, 'utf8');
@@ -102,7 +103,9 @@ async function applyOverrides(packDir, packMeta, destRoot) {
   const overridesDir = path.join(packDir, packMeta.iconOverridesDir || 'icons-extra');
   if (!existsSync(overridesDir)) return 0;
   let applied = 0;
-  for (const variant of VARIANT_ORDER) {
+  for (const variantEntry of await listDir(overridesDir)) {
+    if (!variantEntry.isDirectory() || !SAFE_VARIANT_ID.test(variantEntry.name)) continue;
+    const variant = variantEntry.name;
     const src = path.join(overridesDir, variant);
     const entries = await listDir(src);
     if (entries.length === 0) continue;
@@ -121,14 +124,44 @@ async function loadDefaults() {
   return readJson(path.join(REPO_ROOT, 'schemas/defaults.json'));
 }
 
+function normalizeSources(packMeta) {
+  const sources = { ...(packMeta.vpkSources ?? {}) };
+  if (packMeta.vpk) {
+    if (sources.default) throw new Error('vpk conflicts with vpkSources.default');
+    sources.default = packMeta.vpk;
+  }
+  return sources;
+}
+
+function normalizeExtraction(packMeta, defaults, sourceIds) {
+  const variants = packMeta.extraction?.variants ?? defaults.extraction.variants;
+  const normalized = {};
+  for (const [variant, config] of Object.entries(variants)) {
+    if (!SAFE_VARIANT_ID.test(variant)) continue;
+    const source = config.source ?? (sourceIds.length === 1 ? sourceIds[0] : null);
+    if (!source || !sourceIds.includes(source)) {
+      throw new Error(`variant ${variant} references missing VPK source ${source ?? '(none)'}`);
+    }
+    normalized[variant] = {
+      source,
+      suffixes: config.suffixes ?? [config.suffix],
+    };
+  }
+  return {
+    filePathFilter:
+      packMeta.extraction?.filePathFilter ?? defaults.extraction.filePathFilter,
+    variants: normalized,
+  };
+}
+
 async function extractPack(packDir, outputDir) {
   const packMeta = await readJson(path.join(packDir, 'pack.json'));
   const defaults = await loadDefaults();
-  const extraction = {
-    filePathFilter:
-      packMeta.extraction?.filePathFilter ?? defaults.extraction.filePathFilter,
-    variants: packMeta.extraction?.variants ?? defaults.extraction.variants,
-  };
+  const sources = normalizeSources(packMeta);
+  const sourceIds = Object.keys(sources);
+  const extraction = sourceIds.length > 0
+    ? normalizeExtraction(packMeta, defaults, sourceIds)
+    : null;
 
   console.log(`\n[extract] ${packMeta.id} (${packMeta.game})`);
   const destRoot = path.resolve(outputDir);
@@ -136,15 +169,15 @@ async function extractPack(packDir, outputDir) {
   await fs.mkdir(destRoot, { recursive: true });
 
   // 1. VPK extraction (optional)
-  if (packMeta.vpk) {
-    const vpkSourcePath = path.join(packDir, packMeta.vpk);
+  for (const [sourceId, sourceFile] of Object.entries(sources)) {
+    const vpkSourcePath = path.join(packDir, sourceFile);
     if (!existsSync(vpkSourcePath)) {
       throw new Error(`VPK not found at ${vpkSourcePath}`);
     }
-    const unzipDir = path.join(destRoot, '.unzip');
+    const unzipDir = path.join(destRoot, '.unzip', sourceId);
     const vpkPath = await resolveVpkPath(vpkSourcePath, unzipDir);
     const s2v = await findS2Viewer();
-    const tmpExtractDir = path.join(destRoot, '.tmp');
+    const tmpExtractDir = path.join(destRoot, '.tmp', sourceId);
     await fs.mkdir(tmpExtractDir, { recursive: true });
     console.log(`[extract] decompiling ${path.basename(vpkPath)} via ${s2v}`);
     await run(s2v, [
@@ -156,15 +189,16 @@ async function extractPack(packDir, outputDir) {
     ]);
     const decompiledDir = path.join(tmpExtractDir, extraction.filePathFilter);
     for (const [variant, cfg] of Object.entries(extraction.variants)) {
-      if (!VARIANT_ORDER.includes(variant)) continue;
+      if (cfg.source !== sourceId) continue;
       const variantDest = path.join(destRoot, variant);
       const suffixes = cfg.suffixes ?? [cfg.suffix];
       const n = await copyVariantFiles(decompiledDir, variantDest, suffixes);
       console.log(`[extract]   variant ${variant}: ${n} icon(s) from VPK`);
     }
-    await fs.rm(tmpExtractDir, { recursive: true, force: true });
-    await fs.rm(unzipDir, { recursive: true, force: true });
-  } else {
+  }
+  await fs.rm(path.join(destRoot, '.tmp'), { recursive: true, force: true });
+  await fs.rm(path.join(destRoot, '.unzip'), { recursive: true, force: true });
+  if (sourceIds.length === 0) {
     console.log('[extract] no VPK, skipping decompile');
   }
 
@@ -183,9 +217,22 @@ async function extractPack(packDir, outputDir) {
     hidden: packMeta.hidden ?? false,
     credits: packMeta.credits,
     license: packMeta.license,
+    variantLabels: packMeta.variantLabels,
     icons: {},
   };
-  for (const variant of VARIANT_ORDER) {
+  const ignoredVariants = new Set(packMeta.doNotUse ?? []);
+  const outputEntries = await listDir(destRoot);
+  const variants = outputEntries
+    .filter((entry) => entry.isDirectory() && SAFE_VARIANT_ID.test(entry.name))
+    .map((entry) => entry.name)
+    .sort((a, b) => {
+      const ai = VARIANT_ORDER.indexOf(a);
+      const bi = VARIANT_ORDER.indexOf(b);
+      if (ai >= 0 || bi >= 0) return (ai < 0 ? Number.MAX_SAFE_INTEGER : ai) - (bi < 0 ? Number.MAX_SAFE_INTEGER : bi);
+      return a.localeCompare(b);
+    });
+  for (const variant of variants) {
+    if (ignoredVariants.has(variant)) continue;
     const variantDir = path.join(destRoot, variant);
     const entries = await listDir(variantDir);
     const files = entries
