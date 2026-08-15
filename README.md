@@ -49,6 +49,29 @@ back to the default pack for missing variants. Users on the site choose
 independently which variant maps to the non-hover image and which to the
 hover swap.
 
+Packs may also define custom kebab-case variant ids and labels. When artwork is
+split across multiple VPKs, declare named `vpkSources` and select a source for
+each extracted variant:
+
+```json
+{
+  "vpkSources": {
+    "default": "default.zip",
+    "monochrome": "monochrome.zip"
+  },
+  "extraction": {
+    "variants": {
+      "normal": { "source": "default", "suffix": "_card_psd" },
+      "normal-monochrome": { "source": "monochrome", "suffix": "_card_psd" }
+    }
+  },
+  "variantLabels": {
+    "normal": "Normal",
+    "normal-monochrome": "Normal Monochrome"
+  }
+}
+```
+
 ## Contributing a pack
 
 1. Fork this repository.

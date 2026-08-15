@@ -55,6 +55,16 @@
       "pattern": "\\.(vpk|zip)$",
       "description": "Relative path to the VPK inside this pack folder. May be a plain .vpk or a .zip containing exactly one .vpk. Zipping is strongly preferred; raw VPKs over 100 MB cannot be pushed to GitHub."
     },
+    "vpkSources": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "pattern": "^[a-z0-9][a-z0-9-]{0,31}$" },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "\\.(vpk|zip)$"
+      },
+      "description": "Named VPK inputs for packs that combine multiple archives. extraction.variants entries select a source by id."
+    },
     "extraction": {
       "type": "object",
       "additionalProperties": false,
@@ -67,15 +77,17 @@
           "type": "object",
           "minProperties": 1,
           "additionalProperties": false,
-          "properties": {
-            "minimap":  { "$ref": "#/definitions/variantExtraction" },
-            "normal":   { "$ref": "#/definitions/variantExtraction" },
-            "gloat":    { "$ref": "#/definitions/variantExtraction" },
-            "critical": { "$ref": "#/definitions/variantExtraction" },
-            "minimap-low-res": { "$ref": "#/definitions/variantExtraction" }
+          "patternProperties": {
+            "^[a-z0-9][a-z0-9-]{0,31}$": { "$ref": "#/definitions/variantExtraction" }
           }
         }
       }
+    },
+    "variantLabels": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z0-9][a-z0-9-]{0,31}$" },
+      "additionalProperties": { "type": "string", "minLength": 1, "maxLength": 64 },
+      "description": "Optional user-facing labels for built-in or custom variant ids."
     },
     "iconOverridesDir": {
       "type": "string",
@@ -87,7 +99,7 @@
       "uniqueItems": true,
       "items": {
         "type": "string",
-        "enum": ["minimap", "normal", "gloat", "critical", "minimap-low-res"]
+        "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
       },
       "description": "Variants this pack ships but should not be used by the website (e.g. a fan pack that only has art for some surfaces). Listed variants are dropped during extraction and excluded from the generated manifest."
     }
@@ -101,6 +113,11 @@
         { "required": ["suffixes"] }
       ],
       "properties": {
+        "source": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{0,31}$",
+          "description": "Named vpkSources entry. Required when a pack declares more than one VPK input."
+        },
         "suffix": {
           "type": "string",
           "pattern": "^_[a-z0-9_]+$",
@@ -123,6 +140,7 @@
     {
       "anyOf": [
         { "required": ["vpk"] },
+        { "required": ["vpkSources"] },
         {
           "properties": {
             "iconOverridesDir": { "type": "string", "minLength": 1 }

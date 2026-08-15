@@ -16,6 +16,7 @@ import path from 'path';
 import sharp from 'sharp';
 
 const VARIANT_ORDER = ['minimap', 'normal', 'gloat', 'critical', 'minimap-low-res'];
+const SAFE_VARIANT_ID = /^[a-z0-9][a-z0-9-]{0,31}$/;
 const TILE = 96;        // tile size (px)
 const COLS = 8;
 const PADDING = 8;
@@ -119,10 +120,20 @@ async function buildSheet(packDir, outFile) {
   }
 
   const sections = [];
-  for (const variant of VARIANT_ORDER) {
+  const entries = await fs.readdir(packDir, { withFileTypes: true });
+  const variants = entries
+    .filter((entry) => entry.isDirectory() && SAFE_VARIANT_ID.test(entry.name))
+    .map((entry) => entry.name)
+    .sort((a, b) => {
+      const ai = VARIANT_ORDER.indexOf(a);
+      const bi = VARIANT_ORDER.indexOf(b);
+      if (ai >= 0 || bi >= 0) return (ai < 0 ? Number.MAX_SAFE_INTEGER : ai) - (bi < 0 ? Number.MAX_SAFE_INTEGER : bi);
+      return a.localeCompare(b);
+    });
+  for (const variant of variants) {
     const dir = path.join(packDir, variant);
-    if (!existsSync(dir)) continue;
-    const buf = await buildVariantSection(dir, variant);
+    const label = packMeta?.variantLabels?.[variant] ?? variant;
+    const buf = await buildVariantSection(dir, label);
     if (buf) sections.push(buf);
   }
 
