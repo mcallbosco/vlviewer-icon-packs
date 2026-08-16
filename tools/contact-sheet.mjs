@@ -13,6 +13,7 @@
 import { promises as fs } from 'fs';
 import { existsSync } from 'fs';
 import path from 'path';
+import { pathToFileURL } from 'url';
 import sharp from 'sharp';
 
 const VARIANT_ORDER = ['minimap', 'normal', 'gloat', 'critical', 'minimap-low-res'];
@@ -48,7 +49,7 @@ function svgText(text, w, h, opts = {}) {
   );
 }
 
-async function buildVariantSection(variantDir, variantName) {
+export async function buildVariantSection(variantDir, variantName) {
   let entries;
   try {
     entries = await fs.readdir(variantDir, { withFileTypes: true });
@@ -91,7 +92,7 @@ async function buildVariantSection(variantDir, variantName) {
     const imgPath = path.join(variantDir, file);
 
     const tile = await sharp(imgPath)
-      .resize(TILE, TILE, { fit: 'cover' })
+      .resize(TILE, TILE, { fit: 'contain', background: BG })
       .png()
       .toBuffer();
     composites.push({ input: tile, top: y, left: x });
@@ -179,7 +180,9 @@ async function main() {
   await buildSheet(packArg, outArg);
 }
 
-main().catch((err) => {
-  console.error('[contact-sheet] error:', err.message);
-  process.exit(1);
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+  main().catch((err) => {
+    console.error('[contact-sheet] error:', err.message);
+    process.exit(1);
+  });
+}
