@@ -1,0 +1,39 @@
+{
+  "$schema": "../../../schemas/pack.schema.json",
+  "id": "heavy-shadows",
+  "game": "deadlock",
+  "label": "Heavy Shadows",
+  "familyId": "community",
+  "description": "A collection of hero icons in Pinshi Amos' signature style.",
+  "license": "Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).",
+  "credits": [
+    {
+      "name": "Pinshi Amos",
+      "role": "Artist",
+      "url": "https://x.com/AmosDan67616024"
+    },
+    {
+      "name": "madswami",
+      "role": "Mod Packager",
+      "url": "https://gamebanana.com/members/5295926"
+    },
+    {
+      "name": "arcticshore",
+      "role": "Updater",
+      "url": "https://gamebanana.com/members/4769243"
+    },
+    {
+      "name": "Quads4Kek",
+      "role": "Motivation",
+      "url": "https://www.reddit.com/user/Quads4kek/"
+    }
+  ],
+  "vpk": "pack.vpk.zip",
+  "extraction": {
+    "variants": {
+      "normal": {
+        "suffix": "_card_psd"
+      }
+    }
+  }
+}
