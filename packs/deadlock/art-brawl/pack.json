@@ -223,11 +223,6 @@
       "url": "https://bsky.app/profile/heavereia.bsky.social"
     },
     {
-      "name": "Highwaysight",
-      "role": "Calico Character Select",
-      "url": "https://highwaysight.neocities.org/"
-    },
-    {
       "name": "hyperlazr",
       "role": "Viscous Gloat",
       "url": "https://www.tiktok.com/@hyperlazr"
@@ -626,6 +621,7 @@
     "character-select/hornet.png",
     "character-select/punkgoat.png",
     "character-select/gigawatt.png",
-    "character-select/priest.png"
+    "character-select/priest.png",
+    "character-select/nano.png"
   ]
 }
