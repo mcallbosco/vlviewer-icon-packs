@@ -118,6 +118,11 @@
       "url": "https://twitter.com/Compoun46078267"
     },
     {
+      "name": "Cooldry77",
+      "role": "Grey Talon Gloat",
+      "url": "https://cooldry77.carrd.co/"
+    },
+    {
       "name": "Cutze",
       "role": "Ivy Character Select",
       "url": "https://x.com/cutzematic"
@@ -136,6 +141,11 @@
       "name": "delphinitys",
       "role": "Paradox Critical",
       "url": "https://www.tumblr.com/delphinitys"
+    },
+    {
+      "name": "Dena",
+      "role": "Haze Neutral",
+      "url": "https://x.com/denial_ei"
     },
     {
       "name": "Dirj Tankien",
@@ -267,6 +277,11 @@
       "url": "https://www.tumblr.com/kingknightt"
     },
     {
+      "name": "kousomii",
+      "role": "Victor Character Select",
+      "url": "https://x.com/kousomii"
+    },
+    {
       "name": "ladiesman217",
       "role": "Drifter Gloat",
       "url": "https://x.com/catshpedpancake"
@@ -307,6 +322,11 @@
       "url": "https://x.com/LuisaHexie"
     },
     {
+      "name": "Lycangnoll",
+      "role": "Billy Character Select",
+      "url": "https://x.com/Lycangnoll"
+    },
+    {
       "name": "m3llion",
       "role": "Silver Neutral",
       "url": "https://x.com/m3lli0n"
@@ -340,6 +360,11 @@
       "name": "mellow_lynx",
       "role": "Silver(Werewolf) Gloat",
       "url": "https://www.instagram.com/mellow_lynx"
+    },
+    {
+      "name": "michelle",
+      "role": "Silver Gloat",
+      "url": "https://linktr.ee/michellelightfoot"
     },
     {
       "name": "Mick.bat",
@@ -434,6 +459,11 @@
     {
       "name": "rottedCARCASS",
       "role": "Kelvin Character Select"
+    },
+    {
+      "name": "salmondot",
+      "role": "Seven Character Select",
+      "url": "https://www.instagram.com/ssalmondott"
     },
     {
       "name": "Silicarte",
@@ -581,7 +611,6 @@
     "normal/nano.png",
     "normal/sumo.png",
     "normal/necro.png",
-    "normal/haze.png",
     "normal/astro.png",
     "normal/spectre.png",
     "normal/engineer.png",
@@ -604,7 +633,6 @@
     "critical/wraith.png",
     "critical/yamato.png",
     "gloat/necro.png",
-    "gloat/archer.png",
     "gloat/astro.png",
     "gloat/spectre.png",
     "gloat/engineer.png",
@@ -612,15 +640,11 @@
     "gloat/digger.png",
     "gloat/bookworm.png",
     "gloat/shiv.png",
-    "gloat/werewolf.png",
     "gloat/frank.png",
     "gloat/warden.png",
     "gloat/wraith.png",
     "character-select/astro.png",
-    "character-select/frank.png",
     "character-select/hornet.png",
-    "character-select/punkgoat.png",
-    "character-select/gigawatt.png",
     "character-select/priest.png",
     "character-select/nano.png"
   ]
