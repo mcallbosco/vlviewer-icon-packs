@@ -1,0 +1,510 @@
+{
+  "$schema": "../../../schemas/pack.schema.json",
+  "id": "art-brawl",
+  "game": "deadlock",
+  "label": "Art Brawl Portraits",
+  "familyId": "community",
+  "hidden": true,
+  "description": "A mod that replaces the in-game character portraits to artwork created by more than 100 artists in the Deadlock Art Brawl community.\n\nThis mod was made for Deadlock Art Brawl, a tournament for artists where the losing team draws the winning team's prompt.\n\nWant to participate or contribute to Art Brawl? Join the Discord: https://discord.com/invite/74MJ4KkRep",
+  "license": "Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).",
+  "credits": [
+    {
+      "name": "DatSir",
+      "role": "Modder"
+    },
+    {
+      "name": "DragonRoIlZ",
+      "role": "Modder, Kelvin Gloat",
+      "url": "https://gamebanana.com/members/4879466"
+    },
+    {
+      "name": "747shove",
+      "role": "Billy Neutral",
+      "url": "https://gamebanana.com/members/5544023"
+    },
+    {
+      "name": "aether",
+      "role": "The Doorman Critical",
+      "url": "https://x.com/divinemodes"
+    },
+    {
+      "name": "Aki",
+      "role": "Silver Critical",
+      "url": "https://x.com/AkiKarasuyama"
+    },
+    {
+      "name": "almphy",
+      "role": "Lash Gloat",
+      "url": "https://linktr.ee/almphy"
+    },
+    {
+      "name": "Alyxa Mutt Studio",
+      "role": "Rem Gloat",
+      "url": "https://www.instagram.com/alyxamuttstudio"
+    },
+    {
+      "name": "Apollo",
+      "role": "Drifter Character Select",
+      "url": "https://x.com/poliaths"
+    },
+    {
+      "name": "arsonistWyatt",
+      "role": "Abrams Neutral",
+      "url": "https://x.com/ArsonistWyatt"
+    },
+    {
+      "name": "ASardonicSailor",
+      "role": "Paradox Neutral",
+      "url": "https://sardonicsailor.carrd.co/"
+    },
+    {
+      "name": "Bakle",
+      "role": "Seven Critical",
+      "url": "https://x.com/BakleBoi"
+    },
+    {
+      "name": "basilisken",
+      "role": "Ivy Gloat",
+      "url": "https://gamebanana.com/members/4842145"
+    },
+    {
+      "name": "Bianced",
+      "role": "Viscous Neutral",
+      "url": "https://x.com/Biancedd"
+    },
+    {
+      "name": "billnyerussianspy",
+      "role": "Drifter Neutral",
+      "url": "https://www.instagram.com/billnyesarussianspy"
+    },
+    {
+      "name": "Binkus",
+      "role": "Infernus Critical",
+      "url": "https://x.com/BinkusTheThird"
+    },
+    {
+      "name": "canem",
+      "role": "Grey Talon Critical",
+      "url": "https://x.com/redbobatea"
+    },
+    {
+      "name": "celerys0da",
+      "role": "Bebop Gloat",
+      "url": "https://x.com/celerys0da"
+    },
+    {
+      "name": "Cutze",
+      "role": "Ivy Character Select",
+      "url": "https://x.com/cutzematic"
+    },
+    {
+      "name": "DannietheBunni",
+      "role": "Shiv Neutral",
+      "url": "https://x.com/DannieTheBunni"
+    },
+    {
+      "name": "darkenedmammal",
+      "role": "Mirage Critical",
+      "url": "https://darkenedmammal.carrd.co/"
+    },
+    {
+      "name": "delphinitys",
+      "role": "Paradox Critical",
+      "url": "https://www.tumblr.com/delphinitys"
+    },
+    {
+      "name": "Dirj Tankien",
+      "role": "Silver(Werewolf) Critical",
+      "url": "https://x.com/V3NT0_AURE0"
+    },
+    {
+      "name": "Duckaccino",
+      "role": "Sinclair Neutral",
+      "url": "https://bsky.app/profile/snesman99.bsky.social"
+    },
+    {
+      "name": "Dynoswar",
+      "role": "Sinclair Gloat",
+      "url": "https://dynoswar.straw.page/"
+    },
+    {
+      "name": "elliboon",
+      "role": "Rem Critical",
+      "url": "https://x.com/elliboono"
+    },
+    {
+      "name": "Excalibur",
+      "role": "Infernus Neutral",
+      "url": "https://x.com/Excaliburfyda"
+    },
+    {
+      "name": "exchlomation",
+      "role": "Mo & Krill Neutral",
+      "url": "https://www.instagram.com/exchlomation/"
+    },
+    {
+      "name": "FallenWonders",
+      "role": "Lady Geist Critical",
+      "url": "https://fallenwonders.carrd.co/"
+    },
+    {
+      "name": "Fish",
+      "role": "Pocket Gloat",
+      "url": "https://x.com/Tankoffish66027"
+    },
+    {
+      "name": "Fuerrow",
+      "role": "Mirage Character Select",
+      "url": "https://x.com/Innocinn"
+    },
+    {
+      "name": "GatoMeow",
+      "role": "Ivy Critical",
+      "url": "https://gatomeow.carrd.co/"
+    },
+    {
+      "name": "gojoslefttoe",
+      "role": "Venator Neutral",
+      "url": "https://x.com/gojoslefttoe1"
+    },
+    {
+      "name": "hyperlazr",
+      "role": "Viscous Gloat",
+      "url": "https://www.tiktok.com/@hyperlazr"
+    },
+    {
+      "name": "iiclarkrau",
+      "role": "The Doorman Gloat",
+      "url": "https://linktr.ee/iiclarkrau"
+    },
+    {
+      "name": "InfinityBlaze",
+      "role": "Celeste Gloat",
+      "url": "https://x.com/InfinityBlazeV"
+    },
+    {
+      "name": "jinx",
+      "role": "Holliday Critical",
+      "url": "https://x.com/jinxophobia"
+    },
+    {
+      "name": "kayef",
+      "role": "Warden Critical",
+      "url": "https://kayef.newgrounds.com/"
+    },
+    {
+      "name": "Ken",
+      "role": "Abrams Gloat",
+      "url": "https://x.com/PHO_kg/media"
+    },
+    {
+      "name": "kevos",
+      "role": "Billy Critical",
+      "url": "https://x.com/badkevos"
+    },
+    {
+      "name": "kingknightt",
+      "role": "Victor Critical",
+      "url": "https://www.tumblr.com/kingknightt"
+    },
+    {
+      "name": "ladiesman217",
+      "role": "Drifter Gloat",
+      "url": "https://x.com/catshpedpancake"
+    },
+    {
+      "name": "lamium",
+      "role": "Pocket Critical",
+      "url": "https://lamium.straw.page/"
+    },
+    {
+      "name": "leiandroid",
+      "role": "Celeste Neutral",
+      "url": "https://x.com/leiandroid"
+    },
+    {
+      "name": "lemon",
+      "role": "Mirage Neutral",
+      "url": "https://x.com/HochuBlinov"
+    },
+    {
+      "name": "lemon.emi",
+      "role": "Paige Neutral",
+      "url": "https://x.com/citroncynique"
+    },
+    {
+      "name": "LilyDotDEADLOCK",
+      "role": "Abrams Critical",
+      "url": "https://x.com/LilyDotDEADLOCK"
+    },
+    {
+      "name": "Luisa",
+      "role": "Viscous Critical",
+      "url": "https://x.com/LuisaHexie"
+    },
+    {
+      "name": "m3llion",
+      "role": "Silver Neutral",
+      "url": "https://x.com/m3lli0n"
+    },
+    {
+      "name": "makaraig",
+      "role": "Paige Critical",
+      "url": "https://x.com/senyor_elias"
+    },
+    {
+      "name": "makkux",
+      "role": "Yamato Gloat",
+      "url": "https://x.com/Makkux_"
+    },
+    {
+      "name": "matlab_exe",
+      "role": "Infernus Gloat",
+      "url": "https://x.com/matlab_exe"
+    },
+    {
+      "name": "meetle",
+      "role": "Haze Gloat",
+      "url": "https://www.instagram.com/meetle_"
+    },
+    {
+      "name": "mellow.is.yellow",
+      "role": "Mo & Krill Critical",
+      "url": "https://www.instagram.com/mellow.is.yellow/"
+    },
+    {
+      "name": "mellow_lynx",
+      "role": "Silver(Werewolf) Gloat",
+      "url": "https://www.instagram.com/mellow_lynx"
+    },
+    {
+      "name": "Mick.bat",
+      "role": "Silver(Werewolf) Neutral",
+      "url": "https://x.com/maydotbat"
+    },
+    {
+      "name": "MindCabbage",
+      "role": "Venator Critical",
+      "url": "https://x.com/mindcabbage_"
+    },
+    {
+      "name": "MojiHousE",
+      "role": "Apollo Gloat",
+      "url": "https://bsky.app/profile/mojihouse.bsky.social"
+    },
+    {
+      "name": "mountaintuuna",
+      "role": "Mirage Gloat",
+      "url": "https://x.com/mountaintuuna"
+    },
+    {
+      "name": "Myx",
+      "role": "Kelvin Neutral",
+      "url": "https://www.instagram.com/myxedarchive"
+    },
+    {
+      "name": "nacz",
+      "role": "Apollo Neutral",
+      "url": "https://x.com/eversweetmoon"
+    },
+    {
+      "name": "nekuroo",
+      "role": "Lash Neutral",
+      "url": "https://x.com/chikitisimo"
+    },
+    {
+      "name": "Nimbus",
+      "role": "Graves Critical",
+      "url": "https://x.com/NimbusSketches"
+    },
+    {
+      "name": "Nishi",
+      "role": "Kelvin Critical",
+      "url": "https://x.com/T1redF1sh"
+    },
+    {
+      "name": "Noapt",
+      "role": "Victor Neutral",
+      "url": "https://noapt.carrd.co/"
+    },
+    {
+      "name": "NorwegianOekaki",
+      "role": "Celeste Critical",
+      "url": "https://www.instagram.com/norwegianoekaki/"
+    },
+    {
+      "name": "oryean",
+      "role": "Wraith Neutral",
+      "url": "https://x.com/oryean57695?s=21&t=7iQubiHC69uxRf8bXsCOhw"
+    },
+    {
+      "name": "Pastel",
+      "role": "Vindicta Gloat",
+      "url": "https://x.com/ThePastelClown"
+    },
+    {
+      "name": "patty melt",
+      "role": "Billy Gloat",
+      "url": "https://x.com/pattymeltforeva"
+    },
+    {
+      "name": "rainlovesrice",
+      "role": "McGinnis Critical",
+      "url": "https://www.instagram.com/rainlovesrice?utm_source=qr"
+    },
+    {
+      "name": "ramware",
+      "role": "Mina Character Select",
+      "url": "https://x.com/yaoicoke"
+    },
+    {
+      "name": "reyze.art",
+      "role": "Calico Gloat",
+      "url": "https://www.instagram.com/reyze.art/"
+    },
+    {
+      "name": "rocketsodaa",
+      "role": "Mina Neutral",
+      "url": "https://www.instagram.com/rocketsoda_"
+    },
+    {
+      "name": "Silicarte",
+      "role": "Venator Gloat",
+      "url": "https://x.com/silicarte"
+    },
+    {
+      "name": "SleepyMarsupa",
+      "role": "Haze Character Select",
+      "url": "https://x.com/SleepyMarsupa"
+    },
+    {
+      "name": "snotty",
+      "role": "Dynamo Critical",
+      "url": "https://x.com/snottle"
+    },
+    {
+      "name": "SomethingWithSaturday",
+      "role": "Ivy Neutral",
+      "url": "https://gamebanana.com/members/1741793"
+    },
+    {
+      "name": "swagmaster",
+      "role": "The Doorman Neutral, Warden Neutral",
+      "url": "https://x.com/39nfdc"
+    },
+    {
+      "name": "TAZKORP",
+      "role": "Vyper Gloat",
+      "url": "https://www.tumblr.com/churchoftaztopia?source=share"
+    },
+    {
+      "name": "thiqqestbricc",
+      "role": "Pocket Character Select",
+      "url": "https://linktr.ee/thiqqestbricc"
+    },
+    {
+      "name": "tkr_art_gallery",
+      "role": "The Doorman Character Select",
+      "url": "https://x.com/tkr_art_gallery"
+    },
+    {
+      "name": "TrenchcoatRat",
+      "role": "Rem Neutral",
+      "url": "https://www.tumblr.com/blog/acompleteratastrophe"
+    },
+    {
+      "name": "tteoktokki",
+      "role": "Bebop Neutral",
+      "url": "https://gamebanana.com/members/5184627"
+    },
+    {
+      "name": "tv33",
+      "role": "Dynamo Gloat",
+      "url": "https://flatscrntv33.carrd.co/"
+    },
+    {
+      "name": "virtualviscera",
+      "role": "Paradox Gloat",
+      "url": "https://x.com/virtualviscera"
+    },
+    {
+      "name": "Vulture Salesman",
+      "role": "Seven Gloat",
+      "url": "https://bsky.app/profile/vulturesalesman.bsky.social"
+    },
+    {
+      "name": "Wild-ShiftingCuriosity",
+      "role": "Grey Talon Neutral",
+      "url": "https://x.com/ShiftingCurios1"
+    },
+    {
+      "name": "yan",
+      "role": "Paige Character Select",
+      "url": "https://x.com/edgichel"
+    }
+  ],
+  "vpk": "pack.vpk.zip",
+  "extraction": {
+    "variants": {
+      "normal": {
+        "suffix": "_card_psd"
+      },
+      "gloat": {
+        "suffix": "_card_gloat_psd"
+      },
+      "critical": {
+        "suffix": "_card_critical_psd"
+      },
+      "character-select": {
+        "suffix": "_vertical_psd"
+      }
+    }
+  },
+  "variantLabels": {
+    "normal": "Neutral",
+    "character-select": "Character Select"
+  },
+  "excludeIcons": [
+    "normal/nano.png",
+    "normal/sumo.png",
+    "normal/necro.png",
+    "normal/haze.png",
+    "normal/astro.png",
+    "normal/spectre.png",
+    "normal/engineer.png",
+    "normal/synth.png",
+    "normal/gigawatt.png",
+    "normal/hornet.png",
+    "normal/kali.png",
+    "normal/yamato.png",
+    "critical/fencer.png",
+    "critical/bebop.png",
+    "critical/nano.png",
+    "critical/drifter.png",
+    "critical/haze.png",
+    "critical/lash.png",
+    "critical/vampirebat.png",
+    "critical/shiv.png",
+    "critical/magician.png",
+    "critical/hornet.png",
+    "critical/kali.png",
+    "critical/wraith.png",
+    "critical/yamato.png",
+    "gloat/necro.png",
+    "gloat/archer.png",
+    "gloat/astro.png",
+    "gloat/spectre.png",
+    "gloat/engineer.png",
+    "gloat/vampirebat.png",
+    "gloat/digger.png",
+    "gloat/bookworm.png",
+    "gloat/shiv.png",
+    "gloat/werewolf.png",
+    "gloat/frank.png",
+    "gloat/warden.png",
+    "gloat/wraith.png",
+    "character-select/astro.png",
+    "character-select/frank.png",
+    "character-select/hornet.png"
+  ]
+}
