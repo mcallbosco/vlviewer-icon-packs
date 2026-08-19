@@ -102,6 +102,15 @@
         "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
       },
       "description": "Variants this pack ships but should not be used by the website (e.g. a fan pack that only has art for some surfaces). Listed variants are dropped during extraction and excluded from the generated manifest."
+    },
+    "excludeIcons": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9-]{0,31}/[a-z0-9][a-z0-9._-]*\\.png$"
+      },
+      "description": "Per-icon exclusions as variant/character.png (e.g. normal/nano.png). Matched case-insensitively, dropped during extraction, and omitted from the generated manifest. Missing files are ignored."
     }
   },
   "definitions": {
