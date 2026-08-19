@@ -22,6 +22,11 @@ import os from 'os';
 import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
 import { selectVariantPngs } from './lib/icon-variant-files.mjs';
+import {
+  iconOutputKey,
+  normalizeExcludeIcons,
+  removeExcludedIcons,
+} from './lib/icon-exclude.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -87,19 +92,21 @@ async function resolveVpkPath(vpkPath, workDir) {
   throw new Error(`No .vpk found inside ${vpkPath}`);
 }
 
-async function copyVariantFiles(srcDir, destDir, suffixes) {
+async function copyVariantFiles(srcDir, destDir, suffixes, excludeSet, variant) {
   await fs.mkdir(destDir, { recursive: true });
   const entries = (await listDir(srcDir)).filter((entry) => entry.isFile());
   const selected = selectVariantPngs(entries.map((entry) => entry.name), suffixes);
   let copied = 0;
   for (const { character, fileName } of selected) {
-    await fs.copyFile(path.join(srcDir, fileName), path.join(destDir, `${character}.png`));
+    const outputName = `${character}.png`;
+    if (excludeSet.has(iconOutputKey(variant, outputName))) continue;
+    await fs.copyFile(path.join(srcDir, fileName), path.join(destDir, outputName));
     copied += 1;
   }
   return copied;
 }
 
-async function applyOverrides(packDir, packMeta, destRoot) {
+async function applyOverrides(packDir, packMeta, destRoot, excludeSet) {
   const overridesDir = path.join(packDir, packMeta.iconOverridesDir || 'icons-extra');
   if (!existsSync(overridesDir)) return 0;
   let applied = 0;
@@ -113,6 +120,7 @@ async function applyOverrides(packDir, packMeta, destRoot) {
     await fs.mkdir(dst, { recursive: true });
     for (const entry of entries) {
       if (!entry.isFile() || !entry.name.toLowerCase().endsWith('.png')) continue;
+      if (excludeSet.has(iconOutputKey(variant, entry.name))) continue;
       await fs.copyFile(path.join(src, entry.name), path.join(dst, entry.name));
       applied += 1;
     }
@@ -156,6 +164,8 @@ function normalizeExtraction(packMeta, defaults, sourceIds) {
 
 async function extractPack(packDir, outputDir) {
   const packMeta = await readJson(path.join(packDir, 'pack.json'));
+  const excludeIcons = normalizeExcludeIcons(packMeta.excludeIcons);
+  const excludeSet = new Set(excludeIcons);
   const defaults = await loadDefaults();
   const sources = normalizeSources(packMeta);
   const sourceIds = Object.keys(sources);
@@ -192,7 +202,7 @@ async function extractPack(packDir, outputDir) {
       if (cfg.source !== sourceId) continue;
       const variantDest = path.join(destRoot, variant);
       const suffixes = cfg.suffixes ?? [cfg.suffix];
-      const n = await copyVariantFiles(decompiledDir, variantDest, suffixes);
+      const n = await copyVariantFiles(decompiledDir, variantDest, suffixes, excludeSet, variant);
       console.log(`[extract]   variant ${variant}: ${n} icon(s) from VPK`);
     }
   }
@@ -203,9 +213,16 @@ async function extractPack(packDir, outputDir) {
   }
 
   // 2. Apply icons-extra overrides
-  const applied = await applyOverrides(packDir, packMeta, destRoot);
+  const applied = await applyOverrides(packDir, packMeta, destRoot, excludeSet);
   if (applied > 0) {
     console.log(`[extract] applied ${applied} override file(s) from ${packMeta.iconOverridesDir || 'icons-extra'}/`);
+  }
+  const removed = await removeExcludedIcons(destRoot, excludeIcons);
+  if (excludeIcons.length > 0) {
+    console.log(
+      `[extract] excludeIcons: ${excludeIcons.length} listed path(s) omitted from output`
+      + (removed > 0 ? ` (${removed} deleted).` : '.'),
+    );
   }
 
   // 3. Build a manifest preview

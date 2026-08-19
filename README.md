@@ -49,6 +49,21 @@ back to the default pack for missing variants. Users on the site choose
 independently which variant maps to the non-hover image and which to the
 hover swap.
 
+To omit individual extracted files (for example artwork without consent), list
+them as `variant/character.png` in `excludeIcons`. Matching is case-insensitive.
+Missing paths are ignored, so it is safe to list a variant this pack does not
+extract:
+
+```json
+{
+  "excludeIcons": [
+    "normal/nano.png",
+    "gloat/archer.png",
+    "character-select/astro.png"
+  ]
+}
+```
+
 Packs may also define custom kebab-case variant ids and labels. When artwork is
 split across multiple VPKs, declare named `vpkSources` and select a source for
 each extracted variant:
